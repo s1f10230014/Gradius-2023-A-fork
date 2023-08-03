@@ -24,16 +24,6 @@ const App = () => {
   return (
     <Stage width={1800} height={900}>
       <Layer>
-        {/* <Wedge
-          id="player"
-          fill="red"
-          angle={60}
-          radius={70}
-          rotation={150}
-          x={fight_position[0]}
-          y={fight_position[1]}
-        /> */}
-
         {enemies.map((enemy, index) => (
           <Rect
             key={index}
