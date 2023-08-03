@@ -9,8 +9,7 @@ const App = () => {
   const [enemies, setenemies] = useState<EnemyModel[]>();
   const fetchBord = async () => {
     // const new_fighter_position = await apiClient.game_screen.$get();
-    const new_enemy_pos = await apiClient.check.$get();
-    console.log(new_enemy_pos);
+    const new_enemy_pos = await apiClient.test.$get();
     // setfight_position(new_fighter_position);
     setenemies(new_enemy_pos);
   };
@@ -22,8 +21,18 @@ const App = () => {
   }, []);
   if (!enemies) return <Loading visible />;
   return (
-    <Stage width={1800} height={900}>
+    <Stage width={1100} height={690}>
       <Layer>
+        {/* <Wedge
+          id="player"
+          fill="red"
+          angle={60}
+          radius={70}
+          rotation={150}
+          x={fight_position[0]}
+          y={fight_position[1]}
+        /> */}
+
         {enemies.map((enemy, index) => (
           <Rect
             key={index}
