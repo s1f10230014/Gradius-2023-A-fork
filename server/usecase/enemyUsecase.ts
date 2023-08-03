@@ -1,41 +1,69 @@
 import type { EnemyModel } from '$/commonTypesWithClient/models';
+import { enemyRepository } from '$/repository/enemyRepository';
+import { EnemyIdParser } from '$/service/idParsers';
+import { randomUUID } from 'crypto';
 
-export let enemies_info: EnemyModel[] = [];
+//敵の位置を取得する際にこれを使えば、全ての敵の情報が配列で返されます
+export const enemyUsecase = {
+  getEnemies: async (): Promise<EnemyModel[]> => {
+    return await enemyRepository.getEnemies();
+  },
+};
 
-//仮初期値
+console.log('R');
+
+setInterval(() => {
+  create_enemy();
+}, 9000);
+
+setInterval(() => {
+  // move_or_delete_enemy();
+  move_Enemy();
+  delete_off_screen_enemy();
+}, 100);
+
+// 仮初期値
 const enemy_first_pos_x = 1800;
 const enemy_speed = 5;
 const enemy_radius = 20;
-const enemy_score = 5;
 const enemy_hp = 10;
-const enemy_kinds = 'nomal';
 
-const make_enemy = () => {
-  const new_enemy_info: EnemyModel = {
+const create_enemy = async () => {
+  const new_enemy: EnemyModel = {
+    id: EnemyIdParser.parse(randomUUID()),
     pos: { x: enemy_first_pos_x, y: Math.floor(Math.random() * 690) + 1 },
     speed: enemy_speed,
-    radius: enemy_radius,
-    score: enemy_score,
     hp: enemy_hp,
-    kinds: enemy_kinds,
+    radius: enemy_radius,
   };
-  enemies_info.push(new_enemy_info);
+  await enemyRepository.save(new_enemy);
 };
 
-const move_or_delete_enemy = () => {
-  enemies_info = enemies_info.filter((one_enemy_info) => {
-    if (one_enemy_info.pos.x - one_enemy_info.speed < 50) {
+const move_Enemy = async () => {
+  const enemies: EnemyModel[] = await enemyRepository.getEnemies();
+
+  for (const enemy of enemies) {
+    const moved_enemy: EnemyModel = {
+      ...enemy,
+      //ここは、後でenemyの複雑な動きに対応させる
+      pos: { x: enemy.pos.x - 8, y: enemy.pos.y },
+    };
+    await enemyRepository.save(moved_enemy);
+  }
+};
+
+const delete_off_screen_enemy = async () => {
+  let enemies: EnemyModel[] | null = await enemyRepository.getEnemies();
+  enemies = enemies.filter((enemy) => {
+    //とりあえず50です
+    if (enemy.pos.x < 50) {
+      enemyRepository.declare(enemy.id);
       return false;
+    } else {
+      return true;
     }
-    one_enemy_info.pos.x = one_enemy_info.pos.x - one_enemy_info.speed;
-    return true;
   });
+  //await Promise.allは、必要か微妙
+  //await Promise.all(enemies.map((enemy) => enemyRepository.save(enemy)));
+  enemies.map((enemy) => enemyRepository.save(enemy));
 };
-
-setInterval(() => {
-  make_enemy();
-}, 10000);
-
-setInterval(() => {
-  move_or_delete_enemy();
-}, 100);
