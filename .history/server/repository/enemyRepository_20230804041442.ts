@@ -2,6 +2,7 @@ import type { EnemyId } from '$/commonTypesWithClient/branded';
 import type { EnemyModel } from '$/commonTypesWithClient/models';
 import { EnemyIdParser } from '$/service/idParsers';
 import { prismaClient } from '$/service/prismaClient';
+
 import type { Enemy } from '@prisma/client';
 import { z } from 'zod';
 
@@ -29,10 +30,10 @@ export const enemyRepository = {
       update: {
         pos: enemy.pos,
         //speed upするかも？
-        // speed: enemy.speed,
-        // hp: enemy.hp,
+        speed: enemy.speed,
+        hp: enemy.hp,
         //途中でサイズ変わるかも？
-        // radius: enemy.radius,
+        radius: enemy.radius,
       },
       create: {
         id: enemy.id,
@@ -49,4 +50,3 @@ export const enemyRepository = {
     });
   },
 };
-//

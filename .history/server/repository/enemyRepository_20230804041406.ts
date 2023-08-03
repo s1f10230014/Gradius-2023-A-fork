@@ -29,10 +29,10 @@ export const enemyRepository = {
       update: {
         pos: enemy.pos,
         //speed upするかも？
-        // speed: enemy.speed,
-        // hp: enemy.hp,
+        speed: enemy.speed,
+        hp: enemy.hp,
         //途中でサイズ変わるかも？
-        // radius: enemy.radius,
+        radius: enemy.radius,
       },
       create: {
         id: enemy.id,
@@ -49,4 +49,3 @@ export const enemyRepository = {
     });
   },
 };
-//

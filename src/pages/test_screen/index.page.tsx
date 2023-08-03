@@ -9,7 +9,7 @@ const App = () => {
   const [enemies, setenemies] = useState<EnemyModel[]>();
   const fetchBord = async () => {
     // const new_fighter_position = await apiClient.game_screen.$get();
-    const new_enemy_pos = await apiClient.test.$get();
+    const new_enemy_pos = await apiClient.check.$get();
     console.log(new_enemy_pos);
     // setfight_position(new_fighter_position);
     setenemies(new_enemy_pos);
