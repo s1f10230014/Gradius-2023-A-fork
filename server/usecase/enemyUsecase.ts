@@ -53,7 +53,7 @@ const move_Enemy = async () => {
 };
 
 const delete_off_screen_enemy = async () => {
-  let enemies: EnemyModel[] = await enemyRepository.getEnemies();
+  let enemies: EnemyModel[] | null = await enemyRepository.getEnemies();
   enemies = enemies.filter((enemy) => {
     //とりあえず50です
     if (enemy.pos.x < 50) {
